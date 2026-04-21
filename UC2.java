@@ -1,110 +1,64 @@
-import java.util.Scanner;
+import java.util.Random;
 
 public class UC2 {
 
+    static boolean isHumanTurn;
+    static char humanSymbol;
+    static char computerSymbol;
+
     static char[][] board = new char[3][3];
-    static char currentPlayer = 'X';
 
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-
         initializeBoard();
-
-        while (true) {
-            printBoard();
-            playerMove(sc);
-
-            if (checkWin()) {
-                printBoard();
-                System.out.println("Player " + currentPlayer + " wins!");
-                break;
-            }
-
-            if (isDraw()) {
-                printBoard();
-                System.out.println("Game is a draw!");
-                break;
-            }
-
-            switchPlayer();
-        }
-
-        sc.close();
+        printBoard();
+        tossAndAssignSymbols();
+        displayTossResult();
     }
 
-    // Initialize board
     static void initializeBoard() {
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                board[i][j] = '-';
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < 3; col++) {
+                board[row][col] = '-';
             }
         }
     }
 
-    // Print board
     static void printBoard() {
-        System.out.println("\n-------------");
-        for (int i = 0; i < 3; i++) {
+        System.out.println("-------------");
+        for (int row = 0; row < 3; row++) {
             System.out.print("| ");
-            for (int j = 0; j < 3; j++) {
-                System.out.print(board[i][j] + " | ");
+            for (int col = 0; col < 3; col++) {
+                System.out.print(board[row][col] + " | ");
             }
             System.out.println();
             System.out.println("-------------");
         }
     }
 
-    // Player move
-    static void playerMove(Scanner sc) {
-        int row, col;
+    static void tossAndAssignSymbols() {
+        Random rand = new Random();
 
-        while (true) {
-            System.out.println("Player " + currentPlayer + ", enter row (0-2) and column (0-2): ");
-            row = sc.nextInt();
-            col = sc.nextInt();
+        int toss = rand.nextInt(2);
 
-            if (row >= 0 && row < 3 && col >= 0 && col < 3 && board[row][col] == '-') {
-                board[row][col] = currentPlayer;
-                break;
-            } else {
-                System.out.println("Invalid move! Try again.");
-            }
+        if (toss == 0) {
+            isHumanTurn = true;
+            humanSymbol = 'X';
+            computerSymbol = 'O';
+        } else {
+            isHumanTurn = false;
+            humanSymbol = 'O';
+            computerSymbol = 'X';
         }
     }
 
-    // Switch player
-    static void switchPlayer() {
-        currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
-    }
-
-    // Check win
-    static boolean checkWin() {
-        // Rows & Columns
-        for (int i = 0; i < 3; i++) {
-            if ((board[i][0] == currentPlayer && board[i][1] == currentPlayer && board[i][2] == currentPlayer) ||
-                (board[0][i] == currentPlayer && board[1][i] == currentPlayer && board[2][i] == currentPlayer)) {
-                return true;
-            }
+    static void displayTossResult() {
+        if (isHumanTurn) {
+            System.out.println("Human won the toss and will play first.");
+        } else {
+            System.out.println("Computer won the toss and will play first.");
         }
 
-        // Diagonals
-        if ((board[0][0] == currentPlayer && board[1][1] == currentPlayer && board[2][2] == currentPlayer) ||
-            (board[0][2] == currentPlayer && board[1][1] == currentPlayer && board[2][0] == currentPlayer)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    // Check draw
-    static boolean isDraw() {
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (board[i][j] == '-') {
-                    return false;
-                }
-            }
-        }
-        return true;
+        System.out.println("Human Symbol: " + humanSymbol);
+        System.out.println("Computer Symbol: " + computerSymbol);
     }
 }
