@@ -1,23 +1,34 @@
 import java.util.Random;
 import java.util.Scanner;
 
-public class UC3 {
+public class UC4 {
 
     static boolean isHumanTurn;
     static char humanSymbol;
     static char computerSymbol;
 
     static char[][] board = new char[3][3];
-    static Scanner sc = new Scanner(System.in); 
+    static Scanner sc = new Scanner(System.in);
+
     public static void main(String[] args) {
         initializeBoard();
         printBoard();
         tossAndAssignSymbols();
         displayTossResult();
 
+       
+        int slot = getUserSlot();
+
         
-        int userChoice = getUserSlot();
-        System.out.println("You selected slot: " + userChoice);
+        int[] position = getBoardPosition(slot);
+        int row = position[0];
+        int col = position[1];
+
+        System.out.println("Converted Position -> Row: " + row + ", Column: " + col);
+
+       
+        board[row][col] = humanSymbol;
+        printBoard();
     }
 
     static void initializeBoard() {
@@ -40,9 +51,9 @@ public class UC3 {
         }
     }
 
+    
     static void tossAndAssignSymbols() {
         Random rand = new Random();
-
         int toss = rand.nextInt(2);
 
         if (toss == 0) {
@@ -67,10 +78,9 @@ public class UC3 {
         System.out.println("Computer Symbol: " + computerSymbol);
     }
 
-    
+   
     static int getUserSlot() {
         int slot;
-
         while (true) {
             System.out.print("Enter a slot number (1-9): ");
             slot = sc.nextInt();
@@ -78,8 +88,15 @@ public class UC3 {
             if (slot >= 1 && slot <= 9) {
                 return slot;
             } else {
-                System.out.println("Invalid input! Please enter between 1 and 9.");
+                System.out.println("Invalid input! Enter between 1 and 9.");
             }
         }
+    }
+
+   
+    static int[] getBoardPosition(int slot) {
+        int row = (slot - 1) / 3;
+        int col = (slot - 1) % 3;
+        return new int[]{row, col};
     }
 }
