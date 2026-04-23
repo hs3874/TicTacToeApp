@@ -1,7 +1,7 @@
 import java.util.Random;
 import java.util.Scanner;
 
-public class UC6 {
+public class UC7 {
 
     static boolean isHumanTurn;
     static char humanSymbol;
@@ -17,37 +17,11 @@ public class UC6 {
         tossAndAssignSymbols();
         displayTossResult();
 
-        int row, col;
-
         if (isHumanTurn) {
-            // Human move
-            while (true) {
-                int slot = getUserSlot();
-                int[] pos = getBoardPosition(slot);
-                row = pos[0];
-                col = pos[1];
-
-                if (isValidMove(row, col)) {
-                    placeMove(row, col, humanSymbol);
-                    break;
-                } else {
-                    System.out.println("Invalid move! Try again.");
-                }
-            }
+            humanMove();
             System.out.println("Human played:");
         } else {
-            // Computer move (random)
-            while (true) {
-                int slot = rand.nextInt(9) + 1;
-                int[] pos = getBoardPosition(slot);
-                row = pos[0];
-                col = pos[1];
-
-                if (isValidMove(row, col)) {
-                    placeMove(row, col, computerSymbol);
-                    break;
-                }
-            }
+            computerMove(); // UC7
             System.out.println("Computer played:");
         }
 
@@ -98,6 +72,42 @@ public class UC6 {
 
         System.out.println("Human: " + humanSymbol);
         System.out.println("Computer: " + computerSymbol);
+    }
+
+    // UC3 + UC4 + UC5 + UC6 (Human)
+    static void humanMove() {
+        int row, col;
+
+        while (true) {
+            int slot = getUserSlot();
+            int[] pos = getBoardPosition(slot);
+            row = pos[0];
+            col = pos[1];
+
+            if (isValidMove(row, col)) {
+                placeMove(row, col, humanSymbol);
+                break;
+            } else {
+                System.out.println("Invalid move! Try again.");
+            }
+        }
+    }
+
+    // UC7 ✅ (Computer random move)
+    static void computerMove() {
+        int row, col;
+
+        while (true) {
+            int slot = rand.nextInt(9) + 1; // 1–9
+            int[] pos = getBoardPosition(slot);
+            row = pos[0];
+            col = pos[1];
+
+            if (isValidMove(row, col)) {
+                placeMove(row, col, computerSymbol);
+                break;
+            }
+        }
     }
 
     // UC3
