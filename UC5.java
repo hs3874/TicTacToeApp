@@ -1,7 +1,7 @@
 import java.util.Random;
 import java.util.Scanner;
 
-public class UC4 {
+public class UC5 {
 
     static boolean isHumanTurn;
     static char humanSymbol;
@@ -16,17 +16,25 @@ public class UC4 {
         tossAndAssignSymbols();
         displayTossResult();
 
-       
-        int slot = getUserSlot();
+        int row, col;
 
         
-        int[] position = getBoardPosition(slot);
-        int row = position[0];
-        int col = position[1];
+        
+        while (true) {
+            int slot = getUserSlot(); 
+            int[] position = getBoardPosition(slot); 
+            row = position[0];
+            col = position[1];
 
-        System.out.println("Converted Position -> Row: " + row + ", Column: " + col);
+            if (isValidMove(row, col)) { 
+                break;
+            } else {
+                System.out.println("Invalid move! Cell already occupied or out of range. Try again.");
+            }
+        }
 
-       
+        
+        
         board[row][col] = humanSymbol;
         printBoard();
     }
@@ -51,7 +59,8 @@ public class UC4 {
         }
     }
 
-    
+   
+   
     static void tossAndAssignSymbols() {
         Random rand = new Random();
         int toss = rand.nextInt(2);
@@ -79,6 +88,7 @@ public class UC4 {
     }
 
    
+   
     static int getUserSlot() {
         int slot;
         while (true) {
@@ -93,10 +103,29 @@ public class UC4 {
         }
     }
 
-   
+    
+    
     static int[] getBoardPosition(int slot) {
         int row = (slot - 1) / 3;
         int col = (slot - 1) % 3;
         return new int[]{row, col};
+    }
+
+   
+   
+    static boolean isValidMove(int row, int col) {
+       
+       
+        if (row < 0 || row > 2 || col < 0 || col > 2) {
+            return false;
+        }
+
+      
+      
+       if (board[row][col] != '-') {
+            return false;
+        }
+
+        return true;
     }
 }
