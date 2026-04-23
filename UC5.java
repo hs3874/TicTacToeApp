@@ -18,24 +18,33 @@ public class UC5 {
 
         int row, col;
 
-        
-        
         while (true) {
-            int slot = getUserSlot(); 
-            int[] position = getBoardPosition(slot); 
-            row = position[0];
-            col = position[1];
+            if (isHumanTurn) {
+                int slot = getUserSlot();
+                int[] position = getBoardPosition(slot);
+                row = position[0];
+                col = position[1];
 
-            if (isValidMove(row, col)) { 
-                break;
+                if (isValidMove(row, col)) {
+                    board[row][col] = humanSymbol;
+                    break;
+                } else {
+                    System.out.println("Invalid move! Cell already occupied or out of range. Try again.");
+                }
+
             } else {
-                System.out.println("Invalid move! Cell already occupied or out of range. Try again.");
+                System.out.println("Computer's turn...");
+                Random rand = new Random();
+                row = rand.nextInt(3);
+                col = rand.nextInt(3);
+
+                if (isValidMove(row, col)) {
+                    board[row][col] = computerSymbol;
+                    break;
+                }
             }
         }
 
-        
-        
-        board[row][col] = humanSymbol;
         printBoard();
     }
 
@@ -59,8 +68,6 @@ public class UC5 {
         }
     }
 
-   
-   
     static void tossAndAssignSymbols() {
         Random rand = new Random();
         int toss = rand.nextInt(2);
@@ -87,8 +94,6 @@ public class UC5 {
         System.out.println("Computer Symbol: " + computerSymbol);
     }
 
-   
-   
     static int getUserSlot() {
         int slot;
         while (true) {
@@ -103,26 +108,18 @@ public class UC5 {
         }
     }
 
-    
-    
     static int[] getBoardPosition(int slot) {
         int row = (slot - 1) / 3;
         int col = (slot - 1) % 3;
         return new int[]{row, col};
     }
 
-   
-   
     static boolean isValidMove(int row, int col) {
-       
-       
         if (row < 0 || row > 2 || col < 0 || col > 2) {
             return false;
         }
 
-      
-      
-       if (board[row][col] != '-') {
+        if (board[row][col] != '-') {
             return false;
         }
 
