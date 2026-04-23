@@ -1,7 +1,7 @@
 import java.util.Random;
 import java.util.Scanner;
 
-public class UC5 {
+public class UC6 {
 
     static boolean isHumanTurn;
     static char humanSymbol;
@@ -9,6 +9,7 @@ public class UC5 {
 
     static char[][] board = new char[3][3];
     static Scanner sc = new Scanner(System.in);
+    static Random rand = new Random();
 
     public static void main(String[] args) {
         initializeBoard();
@@ -18,58 +19,63 @@ public class UC5 {
 
         int row, col;
 
-        while (true) {
-            if (isHumanTurn) {
+        if (isHumanTurn) {
+            // Human move
+            while (true) {
                 int slot = getUserSlot();
-                int[] position = getBoardPosition(slot);
-                row = position[0];
-                col = position[1];
+                int[] pos = getBoardPosition(slot);
+                row = pos[0];
+                col = pos[1];
 
                 if (isValidMove(row, col)) {
-                    board[row][col] = humanSymbol;
+                    placeMove(row, col, humanSymbol);
                     break;
                 } else {
-                    System.out.println("Invalid move! Cell already occupied or out of range. Try again.");
+                    System.out.println("Invalid move! Try again.");
                 }
-
-            } else {
-                System.out.println("Computer's turn...");
-                Random rand = new Random();
-                row = rand.nextInt(3);
-                col = rand.nextInt(3);
+            }
+            System.out.println("Human played:");
+        } else {
+            // Computer move (random)
+            while (true) {
+                int slot = rand.nextInt(9) + 1;
+                int[] pos = getBoardPosition(slot);
+                row = pos[0];
+                col = pos[1];
 
                 if (isValidMove(row, col)) {
-                    board[row][col] = computerSymbol;
+                    placeMove(row, col, computerSymbol);
                     break;
                 }
             }
+            System.out.println("Computer played:");
         }
 
         printBoard();
     }
 
     static void initializeBoard() {
-        for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 3; col++) {
-                board[row][col] = '-';
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                board[i][j] = '-';
             }
         }
     }
 
     static void printBoard() {
         System.out.println("-------------");
-        for (int row = 0; row < 3; row++) {
+        for (int i = 0; i < 3; i++) {
             System.out.print("| ");
-            for (int col = 0; col < 3; col++) {
-                System.out.print(board[row][col] + " | ");
+            for (int j = 0; j < 3; j++) {
+                System.out.print(board[i][j] + " | ");
             }
             System.out.println();
             System.out.println("-------------");
         }
     }
 
+    // UC2
     static void tossAndAssignSymbols() {
-        Random rand = new Random();
         int toss = rand.nextInt(2);
 
         if (toss == 0) {
@@ -85,44 +91,41 @@ public class UC5 {
 
     static void displayTossResult() {
         if (isHumanTurn) {
-            System.out.println("Human won the toss and will play first.");
+            System.out.println("Human won the toss and plays first.");
         } else {
-            System.out.println("Computer won the toss and will play first.");
+            System.out.println("Computer won the toss and plays first.");
         }
 
-        System.out.println("Human Symbol: " + humanSymbol);
-        System.out.println("Computer Symbol: " + computerSymbol);
+        System.out.println("Human: " + humanSymbol);
+        System.out.println("Computer: " + computerSymbol);
     }
 
+    // UC3
     static int getUserSlot() {
         int slot;
         while (true) {
-            System.out.print("Enter a slot number (1-9): ");
+            System.out.print("Enter slot (1-9): ");
             slot = sc.nextInt();
 
-            if (slot >= 1 && slot <= 9) {
-                return slot;
-            } else {
-                System.out.println("Invalid input! Enter between 1 and 9.");
-            }
+            if (slot >= 1 && slot <= 9) return slot;
+            else System.out.println("Invalid input!");
         }
     }
 
+    // UC4
     static int[] getBoardPosition(int slot) {
         int row = (slot - 1) / 3;
         int col = (slot - 1) % 3;
         return new int[]{row, col};
     }
 
+    // UC5
     static boolean isValidMove(int row, int col) {
-        if (row < 0 || row > 2 || col < 0 || col > 2) {
-            return false;
-        }
+        return board[row][col] == '-';
+    }
 
-        if (board[row][col] != '-') {
-            return false;
-        }
-
-        return true;
+    // UC6
+    static void placeMove(int row, int col, char symbol) {
+        board[row][col] = symbol;
     }
 }
