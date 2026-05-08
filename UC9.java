@@ -1,7 +1,7 @@
 import java.util.Random;
 import java.util.Scanner;
 
-public class UC8 {
+public class UC9 {
 
     static boolean isHumanTurn;
     static char humanSymbol;
@@ -24,20 +24,22 @@ public class UC8 {
             printBoard();
 
             if (isHumanTurn) {
+
                 System.out.println("Human Turn");
                 humanMove();
 
-                if (checkWin(humanSymbol)) {
+                if (checkWinner(humanSymbol)) {
                     printBoard();
                     System.out.println("Human Wins!");
                     gameOver = true;
                 }
 
             } else {
+
                 System.out.println("Computer Turn");
                 computerMove();
 
-                if (checkWin(computerSymbol)) {
+                if (checkWinner(computerSymbol)) {
                     printBoard();
                     System.out.println("Computer Wins!");
                     gameOver = true;
@@ -56,8 +58,11 @@ public class UC8 {
 
     // Initialize Board
     static void initializeBoard() {
+
         for (int i = 0; i < 3; i++) {
+
             for (int j = 0; j < 3; j++) {
+
                 board[i][j] = '-';
             }
         }
@@ -65,12 +70,15 @@ public class UC8 {
 
     // Print Board
     static void printBoard() {
+
         System.out.println("-------------");
 
         for (int i = 0; i < 3; i++) {
+
             System.out.print("| ");
 
             for (int j = 0; j < 3; j++) {
+
                 System.out.print(board[i][j] + " | ");
             }
 
@@ -85,21 +93,28 @@ public class UC8 {
         int toss = rand.nextInt(2);
 
         if (toss == 0) {
+
             isHumanTurn = true;
             humanSymbol = 'X';
             computerSymbol = 'O';
+
         } else {
+
             isHumanTurn = false;
             humanSymbol = 'O';
             computerSymbol = 'X';
         }
     }
 
+    // Display Toss Result
     static void displayTossResult() {
 
         if (isHumanTurn) {
+
             System.out.println("Human won toss and plays first.");
+
         } else {
+
             System.out.println("Computer won toss and plays first.");
         }
 
@@ -127,6 +142,7 @@ public class UC8 {
                 break;
 
             } else {
+
                 System.out.println("Invalid Move! Try Again.");
             }
         }
@@ -165,14 +181,17 @@ public class UC8 {
             slot = sc.nextInt();
 
             if (slot >= 1 && slot <= 9) {
+
                 return slot;
+
             } else {
+
                 System.out.println("Invalid Input!");
             }
         }
     }
 
-    // Convert Slot to Row-Col
+    // Convert Slot to Position
     static int[] getBoardPosition(int slot) {
 
         int row = (slot - 1) / 3;
@@ -193,10 +212,10 @@ public class UC8 {
         board[row][col] = symbol;
     }
 
-    // Check Win
-    static boolean checkWin(char symbol) {
+    // UC9 - Check Winner
+    static boolean checkWinner(char symbol) {
 
-        // Rows
+        // Check Rows
         for (int i = 0; i < 3; i++) {
 
             if (board[i][0] == symbol &&
@@ -207,7 +226,7 @@ public class UC8 {
             }
         }
 
-        // Columns
+        // Check Columns
         for (int j = 0; j < 3; j++) {
 
             if (board[0][j] == symbol &&
@@ -218,7 +237,7 @@ public class UC8 {
             }
         }
 
-        // Diagonals
+        // Check Main Diagonal
         if (board[0][0] == symbol &&
             board[1][1] == symbol &&
             board[2][2] == symbol) {
@@ -226,6 +245,7 @@ public class UC8 {
             return true;
         }
 
+        // Check Opposite Diagonal
         if (board[0][2] == symbol &&
             board[1][1] == symbol &&
             board[2][0] == symbol) {
@@ -244,6 +264,7 @@ public class UC8 {
             for (int j = 0; j < 3; j++) {
 
                 if (board[i][j] == '-') {
+
                     return false;
                 }
             }
