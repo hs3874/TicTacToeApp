@@ -1,20 +1,23 @@
 import java.util.Random;
 import java.util.Scanner;
 
-public class UC9 {
+public class UC10 {
 
     static boolean isHumanTurn;
     static char humanSymbol;
     static char computerSymbol;
 
     static char[][] board = new char[3][3];
+
     static Scanner sc = new Scanner(System.in);
     static Random rand = new Random();
 
     public static void main(String[] args) {
 
         initializeBoard();
+
         tossAndAssignSymbols();
+
         displayTossResult();
 
         boolean gameOver = false;
@@ -26,9 +29,11 @@ public class UC9 {
             if (isHumanTurn) {
 
                 System.out.println("Human Turn");
+
                 humanMove();
 
                 if (checkWinner(humanSymbol)) {
+
                     printBoard();
                     System.out.println("Human Wins!");
                     gameOver = true;
@@ -37,18 +42,23 @@ public class UC9 {
             } else {
 
                 System.out.println("Computer Turn");
+
                 computerMove();
 
                 if (checkWinner(computerSymbol)) {
+
                     printBoard();
                     System.out.println("Computer Wins!");
                     gameOver = true;
                 }
             }
 
+            // UC10 - Draw Check
             if (!gameOver && checkDraw()) {
+
                 printBoard();
-                System.out.println("Game Draw!");
+                System.out.println("Match Draw!");
+
                 gameOver = true;
             }
 
@@ -87,7 +97,7 @@ public class UC9 {
         }
     }
 
-    // Toss
+    // Toss and Symbols
     static void tossAndAssignSymbols() {
 
         int toss = rand.nextInt(2);
@@ -95,13 +105,17 @@ public class UC9 {
         if (toss == 0) {
 
             isHumanTurn = true;
+
             humanSymbol = 'X';
+
             computerSymbol = 'O';
 
         } else {
 
             isHumanTurn = false;
+
             humanSymbol = 'O';
+
             computerSymbol = 'X';
         }
     }
@@ -119,6 +133,7 @@ public class UC9 {
         }
 
         System.out.println("Human Symbol: " + humanSymbol);
+
         System.out.println("Computer Symbol: " + computerSymbol);
     }
 
@@ -134,11 +149,13 @@ public class UC9 {
             int[] pos = getBoardPosition(slot);
 
             row = pos[0];
+
             col = pos[1];
 
             if (isValidMove(row, col)) {
 
                 placeMove(row, col, humanSymbol);
+
                 break;
 
             } else {
@@ -160,17 +177,19 @@ public class UC9 {
             int[] pos = getBoardPosition(slot);
 
             row = pos[0];
+
             col = pos[1];
 
             if (isValidMove(row, col)) {
 
                 placeMove(row, col, computerSymbol);
+
                 break;
             }
         }
     }
 
-    // Get User Slot
+    // User Slot Input
     static int getUserSlot() {
 
         int slot;
@@ -178,6 +197,7 @@ public class UC9 {
         while (true) {
 
             System.out.print("Enter slot (1-9): ");
+
             slot = sc.nextInt();
 
             if (slot >= 1 && slot <= 9) {
@@ -195,6 +215,7 @@ public class UC9 {
     static int[] getBoardPosition(int slot) {
 
         int row = (slot - 1) / 3;
+
         int col = (slot - 1) % 3;
 
         return new int[]{row, col};
@@ -212,10 +233,10 @@ public class UC9 {
         board[row][col] = symbol;
     }
 
-    // UC9 - Check Winner
+    // Check Winner
     static boolean checkWinner(char symbol) {
 
-        // Check Rows
+        // Rows
         for (int i = 0; i < 3; i++) {
 
             if (board[i][0] == symbol &&
@@ -226,7 +247,7 @@ public class UC9 {
             }
         }
 
-        // Check Columns
+        // Columns
         for (int j = 0; j < 3; j++) {
 
             if (board[0][j] == symbol &&
@@ -237,7 +258,7 @@ public class UC9 {
             }
         }
 
-        // Check Main Diagonal
+        // Main Diagonal
         if (board[0][0] == symbol &&
             board[1][1] == symbol &&
             board[2][2] == symbol) {
@@ -245,7 +266,7 @@ public class UC9 {
             return true;
         }
 
-        // Check Opposite Diagonal
+        // Opposite Diagonal
         if (board[0][2] == symbol &&
             board[1][1] == symbol &&
             board[2][0] == symbol) {
@@ -256,7 +277,7 @@ public class UC9 {
         return false;
     }
 
-    // Check Draw
+    // UC10 - Check Draw
     static boolean checkDraw() {
 
         for (int i = 0; i < 3; i++) {
